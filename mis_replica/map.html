@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>India Map UI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+.state {
+  transition: all 0.2s ease;
+}
+
+.state:hover {
+  fill: #facc15;
+  stroke: #111;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.4));
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+<div class="relative">
+
+  <!-- Tooltip -->
+  <div id="tooltip"
+    class="absolute hidden bg-white text-sm text-gray-800 px-3 py-2 rounded-lg shadow-lg border pointer-events-none z-50">
+  </div>
+
+  <!-- INDIA SVG (SIMPLIFIED BUT MULTI-STATE) -->
+  <svg id="india-map" viewBox="0 0 600 700" class="w-[500px]">
+
+    <!-- North -->
+    <path id="jammu_kashmir" d="M200,50 L300,50 L280,120 L220,120 Z" class="state fill-blue-400 stroke-white"/>
+    <path id="himachal" d="M250,120 L320,120 L300,170 L260,170 Z" class="state fill-blue-400 stroke-white"/>
+    <path id="punjab" d="M200,130 L260,130 L250,180 L210,180 Z" class="state fill-blue-400 stroke-white"/>
+
+    <!-- Central -->
+    <path id="rajasthan" d="M150,200 L300,200 L280,350 L180,350 Z" class="state fill-green-400 stroke-white"/>
+    <path id="madhya_pradesh" d="M300,250 L420,250 L400,360 L320,360 Z" class="state fill-green-400 stroke-white"/>
+
+    <!-- West -->
+    <path id="gujarat" d="M120,260 L200,260 L180,350 L140,350 Z" class="state fill-purple-400 stroke-white"/>
+    <path id="maharashtra" d="M200,350 L350,350 L330,450 L220,450 Z" class="state fill-purple-400 stroke-white"/>
+
+    <!-- South -->
+    <path id="karnataka" d="M230,450 L330,450 L310,550 L250,550 Z" class="state fill-red-400 stroke-white"/>
+    <path id="tamil_nadu" d="M280,550 L350,550 L330,650 L290,650 Z" class="state fill-red-400 stroke-white"/>
+    <path id="kerala" d="M230,550 L260,550 L250,650 L220,650 Z" class="state fill-red-400 stroke-white"/>
+
+    <!-- East -->
+    <path id="west_bengal" d="M420,300 L480,300 L470,400 L430,400 Z" class="state fill-yellow-400 stroke-white"/>
+    <path id="odisha" d="M400,400 L480,400 L460,500 L420,500 Z" class="state fill-yellow-400 stroke-white"/>
+
+  </svg>
+</div>
+
+<script>
+const tooltip = document.getElementById('tooltip');
+
+const stateData = {
+  karnataka: { name: "Karnataka", info: "Bangalore" },
+  maharashtra: { name: "Maharashtra", info: "Mumbai" },
+  tamil_nadu: { name: "Tamil Nadu", info: "Chennai" },
+  kerala: { name: "Kerala", info: "Tourism" },
+  gujarat: { name: "Gujarat", info: "Business Hub" },
+  rajasthan: { name: "Rajasthan", info: "Desert State" },
+  madhya_pradesh: { name: "MP", info: "Central India" },
+  west_bengal: { name: "West Bengal", info: "Kolkata" },
+  odisha: { name: "Odisha", info: "Temples" }
+};
+
+document.querySelectorAll('.state').forEach(state => {
+
+  state.addEventListener('mouseenter', () => {
+    const id = state.id;
+    const data = stateData[id] || { name: id, info: "No data" };
+
+    tooltip.classList.remove('hidden');
+    tooltip.innerHTML = `
+      <div class="font-semibold">${data.name}</div>
+      <div class="text-xs text-gray-500">${data.info}</div>
+    `;
+  });
+
+  state.addEventListener('mousemove', (e) => {
+    tooltip.style.left = (e.pageX + 12) + 'px';
+    tooltip.style.top = (e.pageY + 12) + 'px';
+  });
+
+  state.addEventListener('mouseleave', () => {
+    tooltip.classList.add('hidden');
+  });
+
+});
+</script>
+
+</body>
+</html>
